@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" tests="23" skipped="0" failures="0" errors="0" timestamp="2025-11-05T09:27:31.543Z" hostname="Zacs-MacBook-Air.local" time="0.307">
+  <properties/>
+  <testcase name="testGenerateBookingId()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.211"/>
+  <testcase name="testSearchBookings_SearchTermOnly()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.019"/>
+  <testcase name="testGetBookingsByStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.004"/>
+  <testcase name="testGetBookingById()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.004"/>
+  <testcase name="testCancelBooking_FromWaitingStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.008"/>
+  <testcase name="testCancelBooking_FromConfirmedStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.005"/>
+  <testcase name="testCanCancelBooking_Allowed()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testCanUpdateBooking_CancelledStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.008"/>
+  <testcase name="testSearchBookings_WithBothParameters()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.003"/>
+  <testcase name="testCreateBooking()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.012"/>
+  <testcase name="testCanUpdateBooking_WaitingStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.002"/>
+  <testcase name="testGetBookingsByCustomer()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testCalculateTotalDays()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testCountAllBookings()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testGetAllBookings()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.002"/>
+  <testcase name="testCalculateTotalPrice_WithBreakfast()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testCalculateTotalPrice_WithoutBreakfast()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testHasConflictingBooking_NoConflict()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.002"/>
+  <testcase name="testUpdateBookingDetails()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <testcase name="testUpdateBookingStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.003"/>
+  <testcase name="testCanCancelBooking_NotAllowed()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.002"/>
+  <testcase name="testPayBooking()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.002"/>
+  <testcase name="testHasConflictingBooking_HasConflict()" classname="apap.ti._5.accommodation_2306214510_be.service.AccommodationBookingServiceImplTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
