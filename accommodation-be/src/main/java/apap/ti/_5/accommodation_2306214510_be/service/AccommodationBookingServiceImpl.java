@@ -69,9 +69,11 @@ public class AccommodationBookingServiceImpl implements AccommodationBookingServ
 
     @Override
     public List<AccommodationBooking> searchBookings(String searchTerm, Integer status) {
-        if (status != null) {
+        if (status != null && searchTerm != null) {
+            // Both filters provided
             return bookingRepository.searchBookingsByStatus(searchTerm, status);
         }
+        // Only searchTerm provided
         return bookingRepository.searchBookings(searchTerm);
     }
 
@@ -239,8 +241,21 @@ public class AccommodationBookingServiceImpl implements AccommodationBookingServ
     @Override
     public String generateBookingId(String roomId, LocalDateTime bookingTime) {
         // Extract last 7 digits from room ID
+        // Room ID format: APT-0000-004-101
+        // We need: 004-101 (7 digits: counter 3 digits + dash + unit 3 digits)
         String[] parts = roomId.split("-");
-        String last7 = parts.length >= 2 ? parts[parts.length - 2] + "-" + parts[parts.length - 1] : roomId.substring(Math.max(0, roomId.length() - 7));
+        String last7 = "";
+        
+        if (parts.length >= 4) {
+            // Standard format: HOT/VIL/APT-{uuid4}-{counter}-{unit}
+            last7 = parts[2] + "-" + parts[3];
+        } else if (parts.length >= 2) {
+            // Fallback: take last 2 parts
+            last7 = parts[parts.length - 2] + "-" + parts[parts.length - 1];
+        } else {
+            // Ultimate fallback
+            last7 = roomId.substring(Math.max(0, roomId.length() - 7));
+        }
 
         // Format: BOOK-004-101-2025-10-24-10:38:12
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd-HH:mm:ss");

@@ -103,10 +103,28 @@ public class PropertyRestController {
 
             // Check for duplicate room types
             if (request.getRoomTypes() != null && !request.getRoomTypes().isEmpty()) {
+                // First check for duplicates within the request list itself
+                List<String> roomTypeKeys = new ArrayList<>();
+                
+                for (RoomTypeRequestDTO rtDto : request.getRoomTypes()) {
+                    String key = rtDto.getName() + "-" + rtDto.getFloor();
+                    
+                    if (roomTypeKeys.contains(key)) {
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                                .body(new BaseResponseDTO<>(
+                                        HttpStatus.BAD_REQUEST.value(),
+                                        "Duplicate room type in request: " + rtDto.getName() + " on floor " + rtDto.getFloor(),
+                                        null
+                                ));
+                    }
+                    
+                    roomTypeKeys.add(key);
+                }
+
                 List<RoomType> roomTypesToCreate = new ArrayList<>();
 
                 for (RoomTypeRequestDTO rtDto : request.getRoomTypes()) {
-                    // Check duplicate
+                    // Check duplicate against database
                     if (roomTypeService.isDuplicateRoomType(savedProperty, rtDto.getName(), rtDto.getFloor())) {
                         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                                 .body(new BaseResponseDTO<>(
@@ -130,17 +148,28 @@ public class PropertyRestController {
 
                     RoomType savedRoomType = roomTypeService.createRoomType(roomType);
 
+                    // Get existing room count on this floor for this property
+                    int existingRoomsOnFloor = (int) roomService.countRoomsByPropertyAndFloor(propertyId, rtDto.getFloor());
+                    
                     // Create rooms for this room type
                     for (int i = 1; i <= rtDto.getUnit(); i++) {
                         Room room = new Room();
-                        String roomId = roomService.generateRoomId(propertyId, (rtDto.getFloor() * 100) + i);
+                        // Room number: floor * 100 + next available number
+                        int roomNumber = rtDto.getFloor() * 100 + existingRoomsOnFloor + i;
+                        String roomId = roomService.generateRoomId(propertyId, roomNumber);
                         room.setRoomID(roomId);
-                        room.setName(String.valueOf((rtDto.getFloor() * 100) + i));
+                        room.setName(String.valueOf(roomNumber));
                         room.setRoomType(savedRoomType);
                         roomService.createRoom(room);
                     }
 
                     roomTypesToCreate.add(savedRoomType);
+                }
+
+                // Refresh property from database to load room types
+                Optional<Property> refreshedPropertyOpt = propertyService.getPropertyById(propertyId);
+                if (refreshedPropertyOpt.isPresent()) {
+                    savedProperty = refreshedPropertyOpt.get();
                 }
 
                 // Update total rooms

@@ -1,0 +1,14 @@
+# Frontend directory (separate repo)
+accommodation-fe/
+
+# macOS
+.DS_Store
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+accommodation-be/.gradle/
+bin/

@@ -4,6 +4,7 @@ import apap.ti._5.accommodation_2306214510_be.model.Room;
 import apap.ti._5.accommodation_2306214510_be.model.RoomType;
 import apap.ti._5.accommodation_2306214510_be.repository.AccommodationBookingRepository;
 import apap.ti._5.accommodation_2306214510_be.repository.RoomRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@Slf4j
 public class RoomServiceImpl implements RoomService {
 
     private final RoomRepository roomRepository;
@@ -83,6 +85,26 @@ public class RoomServiceImpl implements RoomService {
     }
 
     @Override
+    public long countRoomsByPropertyAndFloor(String propertyId, int floor) {
+        // Get all rooms for property
+        List<Room> roomsForProperty = roomRepository.findByPropertyID(propertyId);
+        
+        // Count rooms on this floor
+        // A room is on floor X if its room number starts with floor*100
+        return roomsForProperty.stream()
+                .filter(room -> {
+                    try {
+                        // Extract floor from room name (which is the room number)
+                        int roomNumber = Integer.parseInt(room.getName());
+                        return roomNumber >= (floor * 100) && roomNumber < ((floor + 1) * 100);
+                    } catch (NumberFormatException e) {
+                        return false;
+                    }
+                })
+                .count();
+    }
+
+    @Override
     public Room updateRoom(Room room) {
         room.setUpdatedDate(LocalDateTime.now());
         return roomRepository.save(room);
@@ -109,9 +131,12 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public boolean isRoomAvailable(String roomId, LocalDateTime checkIn, LocalDateTime checkOut) {
+        log.debug("Checking availability for room: {} from {} to {}", roomId, checkIn, checkOut);
+        
         // Check maintenance schedule
         Optional<Room> roomOpt = roomRepository.findById(roomId);
         if (roomOpt.isEmpty()) {
+            log.warn("Room not found: {}", roomId);
             return false;
         }
 
@@ -120,12 +145,29 @@ public class RoomServiceImpl implements RoomService {
         // Check if room is in maintenance during the requested period
         if (room.getMaintenanceStart() != null && room.getMaintenanceEnd() != null) {
             if (checkIn.isBefore(room.getMaintenanceEnd()) && checkOut.isAfter(room.getMaintenanceStart())) {
+                log.info("Room {} in maintenance: {} to {}", roomId, room.getMaintenanceStart(), room.getMaintenanceEnd());
                 return false;
             }
         }
 
-        // Check for conflicting bookings
+        // Check for conflicting bookings - try both JPQL and native query
         var conflictingBookings = bookingRepository.findConflictingBookings(roomId, checkIn, checkOut);
+        log.debug("JPQL Conflicting bookings for room {}: {}", roomId, conflictingBookings.size());
+        
+        // If JPQL returns empty but we suspect an issue, also try native query
+        if (conflictingBookings.isEmpty()) {
+            var nativeConflicts = bookingRepository.findConflictingBookingsNative(roomId, checkIn, checkOut);
+            log.debug("Native Conflicting bookings for room {}: {}", roomId, nativeConflicts.size());
+            if (!nativeConflicts.isEmpty()) {
+                log.info("Native query found {} conflicts for room {}", nativeConflicts.size(), roomId);
+            }
+            return nativeConflicts.isEmpty();
+        }
+        
+        log.info("Room {} has {} conflicting bookings", roomId, conflictingBookings.size());
+        conflictingBookings.forEach(b -> log.info("  - Booking: {} Status: {} CheckIn: {} CheckOut: {}", 
+            b.getBookingID(), b.getStatus(), b.getCheckInDate(), b.getCheckOutDate()));
+        
         return conflictingBookings.isEmpty();
     }
 

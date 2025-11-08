@@ -150,4 +150,84 @@ class RoomTypeServiceImplTest {
         verify(roomTypeRepository, times(1))
                 .findByPropertyAndNameAndFloor(testProperty, "Deluxe", 1);
     }
+
+    @Test
+    void testGetAllRoomTypes() {
+        when(roomTypeRepository.findAllByOrderByCreatedDateDesc()).thenReturn(java.util.Arrays.asList(testRoomType));
+
+        java.util.List<RoomType> result = roomTypeService.getAllRoomTypes();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(roomTypeRepository, times(1)).findAllByOrderByCreatedDateDesc();
+    }
+
+    @Test
+    void testGetRoomTypesByProperty() {
+        when(roomTypeRepository.findByProperty(testProperty)).thenReturn(java.util.Arrays.asList(testRoomType));
+
+        java.util.List<RoomType> result = roomTypeService.getRoomTypesByProperty(testProperty);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Deluxe", result.get(0).getName());
+        verify(roomTypeRepository, times(1)).findByProperty(testProperty);
+    }
+
+    @Test
+    void testGenerateRoomTypeId_DifferentCounters() {
+        String result1 = roomTypeService.generateRoomTypeId(0, "Standard", 1);
+        String result10 = roomTypeService.generateRoomTypeId(9, "Standard", 1);
+        String result100 = roomTypeService.generateRoomTypeId(99, "Standard", 1);
+
+        assertTrue(result1.contains("001"));
+        assertTrue(result10.contains("010"));
+        assertTrue(result100.contains("100"));
+    }
+
+    @Test
+    void testCreateRoomType_WithAllFields() {
+        RoomType fullRoomType = new RoomType();
+        fullRoomType.setRoomTypeID("RT-002-Suite-2");
+        fullRoomType.setName("Suite");
+        fullRoomType.setPrice(1000000);
+        fullRoomType.setDescription("Luxury Suite");
+        fullRoomType.setCapacity(4);
+        fullRoomType.setFacility("AC, TV, WiFi, Minibar, Bathtub");
+        fullRoomType.setFloor(2);
+        fullRoomType.setProperty(testProperty);
+
+        when(roomTypeRepository.save(any(RoomType.class))).thenReturn(fullRoomType);
+
+        RoomType result = roomTypeService.createRoomType(fullRoomType);
+
+        assertNotNull(result);
+        assertEquals("Suite", result.getName());
+        assertEquals(1000000, result.getPrice());
+        assertEquals("Luxury Suite", result.getDescription());
+        assertEquals(4, result.getCapacity());
+        verify(roomTypeRepository, times(1)).save(fullRoomType);
+    }
+
+    @Test
+    void testUpdateRoomType_ChangePrice() {
+        testRoomType.setPrice(750000);
+        when(roomTypeRepository.save(any(RoomType.class))).thenReturn(testRoomType);
+
+        RoomType result = roomTypeService.updateRoomType(testRoomType);
+
+        assertEquals(750000, result.getPrice());
+        verify(roomTypeRepository, times(1)).save(testRoomType);
+    }
+
+    @Test
+    void testUpdateRoomType_ChangeFacilities() {
+        testRoomType.setFacility("AC, TV, WiFi, Minibar");
+        when(roomTypeRepository.save(any(RoomType.class))).thenReturn(testRoomType);
+
+        RoomType result = roomTypeService.updateRoomType(testRoomType);
+
+        assertEquals("AC, TV, WiFi, Minibar", result.getFacility());
+        verify(roomTypeRepository, times(1)).save(testRoomType);
+    }
 }

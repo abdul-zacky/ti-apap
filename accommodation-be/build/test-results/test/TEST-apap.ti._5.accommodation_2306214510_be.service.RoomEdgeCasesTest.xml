@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" tests="25" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:36.115Z" hostname="Zacs-MacBook-Air.local" time="0.012">
+  <properties/>
+  <testcase name="testGetRoomsByPropertyId()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testCountRoomsByPropertyAndFloor_NoRoomsOnFloor()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testGenerateRoomId_SecondFloor()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testUpdateRoom()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testCountRoomsByPropertyAndFloor_InvalidRoomName()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGetRoomsByPropertyId_Empty()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testIsRoomAvailable_NotAvailable_RoomNotFound()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGenerateRoomId_FirstFloor()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGenerateRoomId_Apartment()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGetAllRooms_Multiple()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testIsRoomAvailable_Available()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGetRoomsByRoomType()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testGetRoomById_Found()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testIsRoomAvailable_NotAvailable_HasConflict()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testCreateRoom()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testCountRoomsByPropertyAndFloor_Floor1()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testCountRoomsByPropertyAndFloor_Floor2()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testCreateMultipleRooms_TwoRooms()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testGenerateRoomId_Villa()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGetRoomById_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testCreateMultipleRooms_Empty()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testUpdateRoomMaintenance_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testUpdateRoomMaintenance()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.001"/>
+  <testcase name="testGetAllRooms_Empty()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <testcase name="testGenerateRoomId_TenthFloor()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomEdgeCasesTest" time="0.0"/>
+  <system-out><![CDATA[2025-11-08T21:04:36.120+07:00  WARN 46414 --- [accommodation-2306214510-be] [    Test worker] a.t._.a.service.RoomServiceImpl          : Room not found: INVALID-ID
+2025-11-08T21:04:36.123+07:00  INFO 46414 --- [accommodation-2306214510-be] [    Test worker] a.t._.a.service.RoomServiceImpl          : Room HOT-1234-001-101 has 1 conflicting bookings
+2025-11-08T21:04:36.124+07:00  INFO 46414 --- [accommodation-2306214510-be] [    Test worker] a.t._.a.service.RoomServiceImpl          :   - Booking: null Status: 0 CheckIn: null CheckOut: null
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
