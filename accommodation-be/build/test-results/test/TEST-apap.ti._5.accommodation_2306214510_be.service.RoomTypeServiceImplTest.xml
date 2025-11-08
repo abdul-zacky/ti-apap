@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-11-05T09:27:31.933Z" hostname="Zacs-MacBook-Air.local" time="0.045">
+<testsuite name="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:36.191Z" hostname="Zacs-MacBook-Air.local" time="0.006">
   <properties/>
-  <testcase name="testGenerateRoomTypeId_WithSpecialCharacters()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.037"/>
+  <testcase name="testGetRoomTypesByProperty()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testGenerateRoomTypeId_WithSpecialCharacters()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
   <testcase name="testGenerateRoomTypeId()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
   <testcase name="testGetRoomTypeById_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
   <testcase name="testUpdateRoomType()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
-  <testcase name="testCreateRoomType()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
-  <testcase name="testFindByPropertyAndNameAndFloor()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
+  <testcase name="testCreateRoomType()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testUpdateRoomType_ChangePrice()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testFindByPropertyAndNameAndFloor()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testCreateRoomType_WithAllFields()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
   <testcase name="testGetRoomTypeById()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
-  <testcase name="testIsDuplicateRoomType_Duplicate()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
-  <testcase name="testIsDuplicateRoomType_NotDuplicate()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.002"/>
+  <testcase name="testIsDuplicateRoomType_Duplicate()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testIsDuplicateRoomType_NotDuplicate()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
+  <testcase name="testGetAllRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testGenerateRoomTypeId_DifferentCounters()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.0"/>
+  <testcase name="testUpdateRoomType_ChangeFacilities()" classname="apap.ti._5.accommodation_2306214510_be.service.RoomTypeServiceImplTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

@@ -347,4 +347,90 @@ class AccommodationBookingServiceImplTest {
 
         assertFalse(result);
     }
+
+    @Test
+    void testCalculateTotalDays_SameDay() {
+        LocalDateTime checkIn = LocalDateTime.of(2025, 11, 10, 14, 0);
+        LocalDateTime checkOut = LocalDateTime.of(2025, 11, 10, 18, 0);
+
+        int result = bookingService.calculateTotalDays(checkIn, checkOut);
+
+        assertEquals(0, result); // Same day = 0 days difference
+    }
+
+    @Test
+    void testCalculateTotalDays_MultipleDays() {
+        LocalDateTime checkIn = LocalDateTime.of(2025, 11, 10, 14, 0);
+        LocalDateTime checkOut = LocalDateTime.of(2025, 11, 15, 12, 0);
+
+        int result = bookingService.calculateTotalDays(checkIn, checkOut);
+
+        assertEquals(5, result);
+    }
+
+    @Test
+    void testCanUpdateBooking_StatusWaiting() {
+        testBooking.setStatus(0);
+
+        boolean result = bookingService.canUpdateBooking(testBooking);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testCanUpdateBooking_StatusConfirmed() {
+        testBooking.setStatus(1);
+
+        boolean result = bookingService.canUpdateBooking(testBooking);
+
+        assertTrue(result);
+    }
+
+    @Test
+    void testCanUpdateBooking_StatusCancelled() {
+        testBooking.setStatus(2);
+
+        boolean result = bookingService.canUpdateBooking(testBooking);
+
+        assertFalse(result);
+    }
+
+    @Test
+    void testCalculatePriceChange_Increase() {
+        AccommodationBooking oldBooking = new AccommodationBooking();
+        oldBooking.setTotalPrice(1000000);
+
+        AccommodationBooking newBooking = new AccommodationBooking();
+        newBooking.setTotalPrice(1500000);
+
+        int result = bookingService.calculatePriceChange(oldBooking, newBooking);
+
+        assertEquals(500000, result);
+    }
+
+    @Test
+    void testCalculatePriceChange_Decrease() {
+        AccommodationBooking oldBooking = new AccommodationBooking();
+        oldBooking.setTotalPrice(1500000);
+
+        AccommodationBooking newBooking = new AccommodationBooking();
+        newBooking.setTotalPrice(1000000);
+
+        int result = bookingService.calculatePriceChange(oldBooking, newBooking);
+
+        assertEquals(-500000, result);
+    }
+
+    @Test
+    void testCalculatePriceChange_NoChange() {
+        AccommodationBooking oldBooking = new AccommodationBooking();
+        oldBooking.setTotalPrice(1000000);
+
+        AccommodationBooking newBooking = new AccommodationBooking();
+        newBooking.setTotalPrice(1000000);
+
+        int result = bookingService.calculatePriceChange(oldBooking, newBooking);
+
+        assertEquals(0, result);
+    }
 }

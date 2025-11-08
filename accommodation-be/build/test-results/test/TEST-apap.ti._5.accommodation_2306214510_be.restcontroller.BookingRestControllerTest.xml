@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" tests="17" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:35.770Z" hostname="Zacs-MacBook-Air.local" time="0.011">
+  <properties/>
+  <testcase name="testGetAllBookings_StatusThree()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_SearchWithStatusOne()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllBookings_SearchByEmail()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_StatusFour()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_StatusZero()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetBookingById_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_MultipleBookings()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllBookings_SearchWithStatusZero()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllBookings_WithSearchTerm()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_StatusTwo()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetBookingById_Found()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_SearchByCustomerName()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_WithBothFilters()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllBookings_SearchWithStatusThree()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllBookings_NoFilters()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <testcase name="testGetBookingById_MultipleAttempts()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.0"/>
+  <testcase name="testGetAllBookings_WithStatusFilter()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.BookingRestControllerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

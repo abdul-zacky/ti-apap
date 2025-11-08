@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:35.833Z" hostname="Zacs-MacBook-Air.local" time="0.017">
+  <properties/>
+  <testcase name="testCreateProperty_Exception()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCountProperties_Zero()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testCreateProperty_Apartment()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCreateProperty_DuplicateRoomTypeInDatabase()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCountProperties()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testDeleteProperty_Success()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testUpdateProperty_Success()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testDeleteProperty_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testCreateProperty_WithMultipleRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.002"/>
+  <testcase name="testUpdateProperty_MultipleRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testCreateProperty_Hotel()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCreateProperty_Villa()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCreateProperty_WithManyRoomUnits()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.002"/>
+  <testcase name="testDeleteProperty_HasFutureBookings()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCreateProperty_Success_NoRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testCreateProperty_WithDifferentFloors()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.002"/>
+  <testcase name="testCreateProperty_WithExistingOwnerProperties()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testCreateProperty_Success_WithRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testUpdateProperty_RoomTypeNotFound()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testUpdateProperty_WithRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <testcase name="testUpdateProperty_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.001"/>
+  <testcase name="testCreateProperty_DuplicateRoomTypeInRequest()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerPostPutDeleteTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

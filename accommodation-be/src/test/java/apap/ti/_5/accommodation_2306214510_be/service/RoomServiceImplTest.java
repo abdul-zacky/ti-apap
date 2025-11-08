@@ -140,4 +140,97 @@ class RoomServiceImplTest {
         verify(roomRepository, times(1)).findById("HOT-1234-001-101");
         verify(roomRepository, times(1)).save(any(Room.class));
     }
+
+    @Test
+    void testGetAllRooms() {
+        when(roomRepository.findAll()).thenReturn(java.util.Arrays.asList(testRoom));
+
+        java.util.List<Room> result = roomService.getAllRooms();
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(roomRepository, times(1)).findAll();
+    }
+
+    @Test
+    void testGetRoomsByRoomType() {
+        when(roomRepository.findByRoomType(testRoomType)).thenReturn(java.util.Arrays.asList(testRoom));
+
+        java.util.List<Room> result = roomService.getRoomsByRoomType(testRoomType);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(roomRepository, times(1)).findByRoomType(testRoomType);
+    }
+
+    @Test
+    void testGetRoomsByPropertyId() {
+        when(roomRepository.findByPropertyID("HOT-1234-001")).thenReturn(java.util.Arrays.asList(testRoom));
+
+        java.util.List<Room> result = roomService.getRoomsByPropertyId("HOT-1234-001");
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(roomRepository, times(1)).findByPropertyID("HOT-1234-001");
+    }
+
+    @Test
+    void testCreateMultipleRooms() {
+        Room room2 = new Room();
+        room2.setRoomID("HOT-1234-001-102");
+        room2.setName("102");
+        
+        java.util.List<Room> rooms = java.util.Arrays.asList(testRoom, room2);
+        when(roomRepository.save(any(Room.class))).thenReturn(testRoom).thenReturn(room2);
+
+        java.util.List<Room> result = roomService.createMultipleRooms(rooms);
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        verify(roomRepository, times(2)).save(any(Room.class));
+    }
+
+    @Test
+    void testCountRoomsByPropertyAndFloor() {
+        Room floorRoom1 = new Room();
+        floorRoom1.setName("201");
+        Room floorRoom2 = new Room();
+        floorRoom2.setName("202");
+        Room otherFloorRoom = new Room();
+        otherFloorRoom.setName("301");
+
+        when(roomRepository.findByPropertyID("HOT-1234-001"))
+                .thenReturn(java.util.Arrays.asList(floorRoom1, floorRoom2, otherFloorRoom));
+
+        long result = roomService.countRoomsByPropertyAndFloor("HOT-1234-001", 2);
+
+        assertEquals(2, result);
+        verify(roomRepository, times(1)).findByPropertyID("HOT-1234-001");
+    }
+
+    @Test
+    void testGenerateRoomId_WithDifferentFloors() {
+        assertEquals("HOT-1234-001-201", roomService.generateRoomId("HOT-1234-001", 201));
+        assertEquals("HOT-1234-001-301", roomService.generateRoomId("HOT-1234-001", 301));
+        assertEquals("HOT-1234-001-1001", roomService.generateRoomId("HOT-1234-001", 1001));
+    }
+
+    @Test
+    void testGetAvailableRooms() {
+        LocalDateTime checkIn = LocalDateTime.of(2025, 11, 10, 14, 0);
+        LocalDateTime checkOut = LocalDateTime.of(2025, 11, 15, 12, 0);
+
+        when(roomRepository.findAll()).thenReturn(java.util.Arrays.asList(testRoom));
+        when(roomRepository.findById(anyString())).thenReturn(Optional.of(testRoom));
+        when(bookingRepository.findConflictingBookings(anyString(), any(), any()))
+                .thenReturn(java.util.Collections.emptyList());
+        when(bookingRepository.findConflictingBookingsNative(anyString(), any(), any()))
+                .thenReturn(java.util.Collections.emptyList());
+
+        java.util.List<Room> result = roomService.getAvailableRooms(checkIn, checkOut);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(roomRepository, times(1)).findAll();
+    }
 }

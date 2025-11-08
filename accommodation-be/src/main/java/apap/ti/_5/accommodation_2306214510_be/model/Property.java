@@ -32,7 +32,7 @@ public class Property {
     private String address;
 
     @Column(name = "province", nullable = false)
-    private int province;
+    private String province;
 
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
@@ -46,7 +46,7 @@ public class Property {
     @Column(name = "income", nullable = false)
     private int income;
 
-    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "property", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<RoomType> listRoomType = new ArrayList<>();
 

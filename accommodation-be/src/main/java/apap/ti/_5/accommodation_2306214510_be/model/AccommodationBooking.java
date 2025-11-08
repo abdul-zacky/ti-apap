@@ -58,7 +58,7 @@ public class AccommodationBooking {
     @Column(name = "capacity", nullable = false)
     private int capacity;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id", referencedColumnName = "room_id", nullable = false)
     private Room room;
 
@@ -67,6 +67,34 @@ public class AccommodationBooking {
 
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedDate;
+
+    @Transient
+    private String propertyName;
+
+    @Transient
+    private String roomName;
+
+    // Getter to compute propertyName from room relationship
+    public String getPropertyName() {
+        if (propertyName != null) {
+            return propertyName;
+        }
+        if (room != null && room.getRoomType() != null && room.getRoomType().getProperty() != null) {
+            return room.getRoomType().getProperty().getPropertyName();
+        }
+        return "";
+    }
+
+    // Getter to compute roomName from room relationship
+    public String getRoomName() {
+        if (roomName != null) {
+            return roomName;
+        }
+        if (room != null) {
+            return room.getName();
+        }
+        return "";
+    }
 
     @PrePersist
     protected void onCreate() {

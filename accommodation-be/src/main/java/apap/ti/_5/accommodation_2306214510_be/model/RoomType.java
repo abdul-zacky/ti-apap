@@ -44,7 +44,7 @@ public class RoomType {
     @JsonManagedReference
     private List<Room> listRoom = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "property_id", referencedColumnName = "property_id", nullable = false)
     @JsonBackReference
     private Property property;

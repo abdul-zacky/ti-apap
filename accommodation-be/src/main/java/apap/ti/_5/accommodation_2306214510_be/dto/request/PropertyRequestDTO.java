@@ -13,7 +13,7 @@ import java.util.UUID;
 public class PropertyRequestDTO {
     private String propertyName;
     private int type; // 1: Hotel, 2: Villa, 3: Apartment
-    private int province;
+    private String province;
     private String address;
     private String description;
     private UUID ownerID;
