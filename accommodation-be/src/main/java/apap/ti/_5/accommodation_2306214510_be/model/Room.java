@@ -34,7 +34,7 @@ public class Room {
     @Column(name = "maintenance_end")
     private LocalDateTime maintenanceEnd;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_type_id", referencedColumnName = "room_type_id", nullable = false)
     @JsonBackReference
     private RoomType roomType;

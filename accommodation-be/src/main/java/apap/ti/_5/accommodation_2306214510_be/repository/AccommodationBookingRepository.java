@@ -36,6 +36,15 @@ public interface AccommodationBookingRepository extends JpaRepository<Accommodat
     List<AccommodationBooking> findConflictingBookings(@Param("roomID") String roomID,
                                                        @Param("checkIn") LocalDateTime checkIn,
                                                        @Param("checkOut") LocalDateTime checkOut);
+    
+    // Alternative query with explicit room ID comparison (debug)
+    @Query(value = "SELECT * FROM accommodation_booking WHERE room_id = :roomID AND " +
+                   "status NOT IN (2, 4) AND " +
+                   "(CAST(:checkIn AS timestamp) < check_out_date AND CAST(:checkOut AS timestamp) > check_in_date)",
+           nativeQuery = true)
+    List<AccommodationBooking> findConflictingBookingsNative(@Param("roomID") String roomID,
+                                                             @Param("checkIn") LocalDateTime checkIn,
+                                                             @Param("checkOut") LocalDateTime checkOut);
 
     // Find bookings that need to be marked as done (check-in date has passed and status is 1)
     @Query("SELECT b FROM AccommodationBooking b WHERE b.checkInDate <= :currentDate AND b.status = 1")

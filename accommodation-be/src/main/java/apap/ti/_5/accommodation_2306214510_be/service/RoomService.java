@@ -19,6 +19,7 @@ public interface RoomService {
     List<Room> getRoomsByRoomType(RoomType roomType);
     List<Room> getRoomsByPropertyId(String propertyId);
     List<Room> getAvailableRooms(LocalDateTime checkIn, LocalDateTime checkOut);
+    long countRoomsByPropertyAndFloor(String propertyId, int floor);
 
     // Update
     Room updateRoom(Room room);

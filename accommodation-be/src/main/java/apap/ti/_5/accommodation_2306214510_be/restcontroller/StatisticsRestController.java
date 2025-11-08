@@ -97,13 +97,13 @@ public class StatisticsRestController {
 
     // GET properties by province (for geographic visualization)
     @GetMapping("/properties-by-province")
-    public ResponseEntity<BaseResponseDTO<Map<Integer, Integer>>> getPropertiesByProvince() {
+    public ResponseEntity<BaseResponseDTO<Map<String, Integer>>> getPropertiesByProvince() {
         List<Property> allProperties = propertyService.getAllProperties();
 
-        Map<Integer, Integer> provinceCount = new HashMap<>();
+        Map<String, Integer> provinceCount = new HashMap<>();
 
         for (Property property : allProperties) {
-            int province = property.getProvince();
+            String province = property.getProvince();
             provinceCount.put(province, provinceCount.getOrDefault(province, 0) + 1);
         }
 

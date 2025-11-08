@@ -42,7 +42,7 @@ class PropertyServiceImplTest {
         testProperty.setPropertyID("HOT-1234-001");
         testProperty.setPropertyName("Test Hotel");
         testProperty.setType(1);
-        testProperty.setProvince(31);
+        testProperty.setProvince("Jakarta");
         testProperty.setAddress("Test Address");
         testProperty.setDescription("Test Description");
         testProperty.setOwnerID(testOwnerId);
@@ -281,4 +281,94 @@ class PropertyServiceImplTest {
         verify(bookingRepository, times(1))
                 .findByPropertyIDAndCheckInDateAfter(eq("HOT-1234-001"), any(LocalDateTime.class));
     }
+
+    @Test
+    void testSearchProperties_ByNameAndType() {
+        when(propertyRepository.findByPropertyNameContainingIgnoreCaseAndTypeOrderByUpdatedDateDesc(
+                "Test", 1)).thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties("Test", 1, null);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Test Hotel", result.get(0).getPropertyName());
+        verify(propertyRepository, times(1))
+                .findByPropertyNameContainingIgnoreCaseAndTypeOrderByUpdatedDateDesc("Test", 1);
+    }
+
+    @Test
+    void testSearchProperties_ByNameAndStatus() {
+        when(propertyRepository.findByPropertyNameContainingIgnoreCaseAndActiveStatusOrderByUpdatedDateDesc(
+                "Test", 1)).thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties("Test", null, 1);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(propertyRepository, times(1))
+                .findByPropertyNameContainingIgnoreCaseAndActiveStatusOrderByUpdatedDateDesc("Test", 1);
+    }
+
+    @Test
+    void testSearchProperties_ByTypeAndStatus() {
+        when(propertyRepository.findByTypeAndActiveStatusOrderByUpdatedDateDesc(1, 1))
+                .thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties(null, 1, 1);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(propertyRepository, times(1))
+                .findByTypeAndActiveStatusOrderByUpdatedDateDesc(1, 1);
+    }
+
+    @Test
+    void testSearchProperties_ByNameOnly() {
+        when(propertyRepository.findByPropertyNameContainingIgnoreCaseOrderByUpdatedDateDesc("Test"))
+                .thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties("Test", null, null);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(propertyRepository, times(1))
+                .findByPropertyNameContainingIgnoreCaseOrderByUpdatedDateDesc("Test");
+    }
+
+    @Test
+    void testSearchProperties_ByTypeOnly() {
+        when(propertyRepository.findByTypeOrderByUpdatedDateDesc(1))
+                .thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties(null, 1, null);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(propertyRepository, times(1)).findByTypeOrderByUpdatedDateDesc(1);
+    }
+
+    @Test
+    void testSearchProperties_ByStatusOnly() {
+        when(propertyRepository.findByActiveStatusOrderByUpdatedDateDesc(1))
+                .thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties(null, null, 1);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(propertyRepository, times(1)).findByActiveStatusOrderByUpdatedDateDesc(1);
+    }
+
+    @Test
+    void testSearchProperties_NoFilters() {
+        when(propertyRepository.findAllByOrderByUpdatedDateDesc())
+                .thenReturn(Arrays.asList(testProperty));
+
+        List<Property> result = propertyService.searchProperties(null, null, null);
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        verify(propertyRepository, times(1)).findAllByOrderByUpdatedDateDesc();
+    }
+
 }

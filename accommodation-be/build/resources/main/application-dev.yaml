@@ -5,3 +5,7 @@ spring:
     url: ${DATABASE_URL_DEV}
     username: ${DEV_USERNAME}
     password: ${DEV_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: false
