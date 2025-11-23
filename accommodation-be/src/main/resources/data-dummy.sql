@@ -25,7 +25,7 @@ INSERT INTO room_type (room_type_id, name, description, capacity, price, floor, 
 
 -- Insert Room Types for Shangri-La Hotel at The Shard
 INSERT INTO room_type (room_type_id, name, description, capacity, price, floor, facility, property_id, created_date, updated_date) VALUES
-('RT-004-01', 'Deluxe City View', 'Modern luxury room with panoramic city views, marble bathroom, and smart technology.', 2, 12000000, 34, 'King Bed, City View, Marble Bathroom, WiFi, Smart TV, Nespresso Machine', 'PROP-004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+('RT-004-01', 'Deluxe City View', 'Modern luxury with panoramic city views, marble bathroom, and smart technology.', 2, 12000000, 34, 'King Bed, City View, Marble Bathroom, WiFi, Smart TV, Nespresso Machine', 'PROP-004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('RT-004-02', 'Premium Suite', 'Spacious suite with separate living area and breathtaking London skyline views.', 3, 25000000, 40, 'King Bed, Living Room, Skyline View, Walk-in Closet, Spa Bath, Premium Amenities', 'PROP-004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 ('RT-004-03', 'Luxury Penthouse', 'Ultimate luxury penthouse with private terrace overlooking all of London.', 4, 55000000, 52, 'Two Bedrooms, Grand Living Room, Private Terrace, 360° View, Butler Service', 'PROP-004', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
