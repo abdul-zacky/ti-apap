@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" tests="50" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:35.782Z" hostname="Zacs-MacBook-Air.local" time="0.051">
+  <properties/>
+  <testcase name="testGetAllProperties_NameGrand()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.025"/>
+  <testcase name="testGetAllProperties_NameHotel()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameVilla()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_NoFilters_EmptyResults()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetPropertyById_ApartmentId()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_NameWithNumbers()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_Type3StatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameHotelType1()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_NameVillaType2()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_AllFilters_VillaType2Active()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_ShortName()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_AllFilters_ApartmentType3Active()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_StatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_AllFilters_HotelType1Inactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameApartmentType3()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_EmptyResult_StatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameHotelStatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetPropertyById_NotFound1()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetPropertyById_NotFound2()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetPropertyById_NotFound3()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_StatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameApartment()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameLuxury()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_AllFilters_VillaType2Inactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_LongName()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_Type1StatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_HundredProperties()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameHotelStatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_EmptyResult_Type1()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_EmptyResult_Type2()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_EmptyResult_Type3()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_Type3StatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameWithSpecialChars()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_TenProperties()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_AllFilters_HotelType1Active()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_NoFilters_WithResults()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetPropertyById_VillaId()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_AllFilters_ApartmentType3Inactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_Type2StatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_Type1()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_Type2()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_Type3()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameVillaStatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_Type1StatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_NameVillaStatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetAllProperties_EmptyResult_StatusActive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_FiftyProperties()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_Type2StatusInactive()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <testcase name="testGetPropertyById_HotelId()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.0"/>
+  <testcase name="testGetAllProperties_SingleProperty()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.PropertyRestControllerComprehensiveTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

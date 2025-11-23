@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.restcontroller.ProvinceRestControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:35.858Z" hostname="Zacs-MacBook-Air.local" time="0.118">
+  <properties/>
+  <testcase name="testGetAllProvinces_NoDataKey()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.ProvinceRestControllerTest" time="0.109"/>
+  <testcase name="testGetAllProvinces_EmptyList()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.ProvinceRestControllerTest" time="0.002"/>
+  <testcase name="testGetAllProvinces_Success()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.ProvinceRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllProvinces_NullResponse()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.ProvinceRestControllerTest" time="0.001"/>
+  <testcase name="testGetAllProvinces_Exception()" classname="apap.ti._5.accommodation_2306214510_be.restcontroller.ProvinceRestControllerTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2025-11-08T14:04:36.102Z" hostname="Zacs-MacBook-Air.local" time="0.012">
+  <properties/>
+  <testcase name="testSearchProperties_ByNameOnly()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testCountProperties()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testSearchProperties_ByNameAndStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testUpdateProperty()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testCreateProperty()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testSearchProperties_ByTypeAndStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testDeleteProperty_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testSearchProperties_NoFilters()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testSearchProperties_ByStatusOnly()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testSearchProperties_WithAllFilters()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testSearchProperties_ByNameAndType()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testGetPropertyById_NotFound()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testDeleteProperty()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testSearchProperties_ByTypeOnly()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testSearchProperties_WithNameOnly()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testCountPropertiesByOwner()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testGeneratePropertyId_Apartment()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testCalculateTotalRooms()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testGetPropertyById()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testSearchProperties_WithTypeAndStatus()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testGetAllProperties()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testGeneratePropertyId_Hotel()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testGeneratePropertyId_Villa()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testCanDeleteProperty_NoFutureBookings()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <testcase name="testCanDeleteProperty_HasFutureBookings()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.001"/>
+  <testcase name="testCalculateTotalRooms_NoRoomTypes()" classname="apap.ti._5.accommodation_2306214510_be.service.PropertyServiceImplTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

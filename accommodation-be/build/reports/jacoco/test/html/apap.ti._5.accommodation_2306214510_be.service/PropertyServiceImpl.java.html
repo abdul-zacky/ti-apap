@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertyServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">accommodation-2306214510-be</a> &gt; <a href="index.source.html" class="el_package">apap.ti._5.accommodation_2306214510_be.service</a> &gt; <span class="el_source">PropertyServiceImpl.java</span></div><h1>PropertyServiceImpl.java</h1><pre class="source lang-java linenums">package apap.ti._5.accommodation_2306214510_be.service;
+
+import apap.ti._5.accommodation_2306214510_be.model.Property;
+import apap.ti._5.accommodation_2306214510_be.model.RoomType;
+import apap.ti._5.accommodation_2306214510_be.repository.AccommodationBookingRepository;
+import apap.ti._5.accommodation_2306214510_be.repository.PropertyRepository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+@Transactional
+public class PropertyServiceImpl implements PropertyService {
+
+    private final PropertyRepository propertyRepository;
+    private final AccommodationBookingRepository bookingRepository;
+
+    // Constructor Dependency Injection
+    public PropertyServiceImpl(PropertyRepository propertyRepository,
+<span class="fc" id="L24">                               AccommodationBookingRepository bookingRepository) {</span>
+<span class="fc" id="L25">        this.propertyRepository = propertyRepository;</span>
+<span class="fc" id="L26">        this.bookingRepository = bookingRepository;</span>
+<span class="fc" id="L27">    }</span>
+
+    @Override
+    public Property createProperty(Property property) {
+<span class="fc" id="L31">        property.setCreatedDate(LocalDateTime.now());</span>
+<span class="fc" id="L32">        property.setUpdatedDate(LocalDateTime.now());</span>
+<span class="fc" id="L33">        property.setActiveStatus(1); // Active by default</span>
+<span class="fc" id="L34">        property.setIncome(0); // Initial income is 0</span>
+<span class="fc" id="L35">        return propertyRepository.save(property);</span>
+    }
+
+    @Override
+    public List&lt;Property&gt; getAllProperties() {
+<span class="fc" id="L40">        return propertyRepository.findAllByOrderByUpdatedDateDesc();</span>
+    }
+
+    @Override
+    public Optional&lt;Property&gt; getPropertyById(String id) {
+<span class="fc" id="L45">        return propertyRepository.findById(id);</span>
+    }
+
+    @Override
+    public List&lt;Property&gt; searchProperties(String name, Integer type, Integer status) {
+<span class="fc bfc" id="L50" title="All 6 branches covered.">        if (name != null &amp;&amp; type != null &amp;&amp; status != null) {</span>
+<span class="fc" id="L51">            return propertyRepository.findByPropertyNameContainingIgnoreCaseAndTypeAndActiveStatusOrderByUpdatedDateDesc(</span>
+<span class="fc" id="L52">                    name, type, status);</span>
+<span class="fc bfc" id="L53" title="All 4 branches covered.">        } else if (name != null &amp;&amp; type != null) {</span>
+<span class="fc" id="L54">            return propertyRepository.findByPropertyNameContainingIgnoreCaseAndTypeOrderByUpdatedDateDesc(name, type);</span>
+<span class="fc bfc" id="L55" title="All 4 branches covered.">        } else if (name != null &amp;&amp; status != null) {</span>
+<span class="fc" id="L56">            return propertyRepository.findByPropertyNameContainingIgnoreCaseAndActiveStatusOrderByUpdatedDateDesc(</span>
+<span class="fc" id="L57">                    name, status);</span>
+<span class="fc bfc" id="L58" title="All 4 branches covered.">        } else if (type != null &amp;&amp; status != null) {</span>
+<span class="fc" id="L59">            return propertyRepository.findByTypeAndActiveStatusOrderByUpdatedDateDesc(type, status);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        } else if (name != null) {</span>
+<span class="fc" id="L61">            return propertyRepository.findByPropertyNameContainingIgnoreCaseOrderByUpdatedDateDesc(name);</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        } else if (type != null) {</span>
+<span class="fc" id="L63">            return propertyRepository.findByTypeOrderByUpdatedDateDesc(type);</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        } else if (status != null) {</span>
+<span class="fc" id="L65">            return propertyRepository.findByActiveStatusOrderByUpdatedDateDesc(status);</span>
+        } else {
+<span class="fc" id="L67">            return propertyRepository.findAllByOrderByUpdatedDateDesc();</span>
+        }
+    }
+
+    @Override
+    public long countProperties() {
+<span class="fc" id="L73">        return propertyRepository.count();</span>
+    }
+
+    @Override
+    public long countPropertiesByOwner(UUID ownerId) {
+<span class="fc" id="L78">        return propertyRepository.countByOwnerID(ownerId);</span>
+    }
+
+    @Override
+    public Property updateProperty(Property property) {
+<span class="fc" id="L83">        property.setUpdatedDate(LocalDateTime.now());</span>
+<span class="fc" id="L84">        return propertyRepository.save(property);</span>
+    }
+
+    @Override
+    public Property deleteProperty(String id) {
+<span class="fc" id="L89">        Optional&lt;Property&gt; propertyOpt = propertyRepository.findById(id);</span>
+<span class="fc bfc" id="L90" title="All 2 branches covered.">        if (propertyOpt.isPresent()) {</span>
+<span class="fc" id="L91">            Property property = propertyOpt.get();</span>
+<span class="fc" id="L92">            property.setActiveStatus(0); // Soft delete</span>
+<span class="fc" id="L93">            property.setUpdatedDate(LocalDateTime.now());</span>
+
+            // Set all rooms to inactive
+<span class="fc" id="L96">            property.getListRoomType().forEach(roomType -&gt; {</span>
+<span class="nc" id="L97">                roomType.getListRoom().forEach(room -&gt; {</span>
+<span class="nc" id="L98">                    room.setActiveRoom(0);</span>
+<span class="nc" id="L99">                    room.setUpdatedDate(LocalDateTime.now());</span>
+<span class="nc" id="L100">                });</span>
+<span class="nc" id="L101">            });</span>
+
+<span class="fc" id="L103">            return propertyRepository.save(property);</span>
+        }
+<span class="fc" id="L105">        return null;</span>
+    }
+
+    @Override
+    public String generatePropertyId(int type, UUID ownerId, long propertyCount) {
+        String prefix;
+<span class="pc bpc" id="L111" title="1 of 4 branches missed.">        switch (type) {</span>
+            case 1:
+<span class="fc" id="L113">                prefix = &quot;HOT&quot;;</span>
+<span class="fc" id="L114">                break;</span>
+            case 2:
+<span class="fc" id="L116">                prefix = &quot;VIL&quot;;</span>
+<span class="fc" id="L117">                break;</span>
+            case 3:
+<span class="fc" id="L119">                prefix = &quot;APT&quot;;</span>
+<span class="fc" id="L120">                break;</span>
+            default:
+<span class="nc" id="L122">                prefix = &quot;UNK&quot;;</span>
+        }
+
+        // Get last 4 characters of UUID
+<span class="fc" id="L126">        String ownerIdStr = ownerId.toString().replace(&quot;-&quot;, &quot;&quot;);</span>
+<span class="fc" id="L127">        String last4 = ownerIdStr.substring(ownerIdStr.length() - 4);</span>
+
+        // 3 digit counter
+<span class="fc" id="L130">        String counter = String.format(&quot;%03d&quot;, propertyCount + 1);</span>
+
+<span class="fc" id="L132">        return prefix + &quot;-&quot; + last4 + &quot;-&quot; + counter;</span>
+    }
+
+    @Override
+    public int calculateTotalRooms(Property property) {
+<span class="pc bpc" id="L137" title="1 of 4 branches missed.">        if (property.getListRoomType() == null || property.getListRoomType().isEmpty()) {</span>
+<span class="fc" id="L138">            return 0;</span>
+        }
+
+<span class="fc" id="L141">        return property.getListRoomType().stream()</span>
+<span class="pc bpc" id="L142" title="1 of 2 branches missed.">                .mapToInt(roomType -&gt; roomType.getListRoom() != null ? roomType.getListRoom().size() : 0)</span>
+<span class="fc" id="L143">                .sum();</span>
+    }
+
+    @Override
+    public boolean canDeleteProperty(String propertyId) {
+        // Check if there are any future bookings
+<span class="fc" id="L149">        LocalDateTime now = LocalDateTime.now();</span>
+<span class="fc" id="L150">        var futureBookings = bookingRepository.findByPropertyIDAndCheckInDateAfter(propertyId, now);</span>
+<span class="fc" id="L151">        return futureBookings.isEmpty();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

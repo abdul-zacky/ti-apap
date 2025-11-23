@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PropertyRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">accommodation-2306214510-be</a> &gt; <a href="index.source.html" class="el_package">apap.ti._5.accommodation_2306214510_be.restcontroller</a> &gt; <span class="el_source">PropertyRestController.java</span></div><h1>PropertyRestController.java</h1><pre class="source lang-java linenums">package apap.ti._5.accommodation_2306214510_be.restcontroller;
+
+import apap.ti._5.accommodation_2306214510_be.dto.BaseResponseDTO;
+import apap.ti._5.accommodation_2306214510_be.dto.request.PropertyRequestDTO;
+import apap.ti._5.accommodation_2306214510_be.dto.request.RoomTypeRequestDTO;
+import apap.ti._5.accommodation_2306214510_be.model.Property;
+import apap.ti._5.accommodation_2306214510_be.model.Room;
+import apap.ti._5.accommodation_2306214510_be.model.RoomType;
+import apap.ti._5.accommodation_2306214510_be.service.PropertyService;
+import apap.ti._5.accommodation_2306214510_be.service.RoomService;
+import apap.ti._5.accommodation_2306214510_be.service.RoomTypeService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+@RestController
+@RequestMapping(&quot;/api/property&quot;)
+@CrossOrigin(origins = &quot;*&quot;)
+public class PropertyRestController {
+
+    private final PropertyService propertyService;
+    private final RoomTypeService roomTypeService;
+    private final RoomService roomService;
+
+    // Constructor Dependency Injection
+    public PropertyRestController(PropertyService propertyService,
+                                  RoomTypeService roomTypeService,
+<span class="fc" id="L33">                                  RoomService roomService) {</span>
+<span class="fc" id="L34">        this.propertyService = propertyService;</span>
+<span class="fc" id="L35">        this.roomTypeService = roomTypeService;</span>
+<span class="fc" id="L36">        this.roomService = roomService;</span>
+<span class="fc" id="L37">    }</span>
+
+    // GET all properties with optional filters
+    @GetMapping(&quot;&quot;)
+    public ResponseEntity&lt;BaseResponseDTO&lt;List&lt;Property&gt;&gt;&gt; getAllProperties(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Integer type,
+            @RequestParam(required = false) Integer status) {
+
+<span class="fc" id="L46">        List&lt;Property&gt; properties = propertyService.searchProperties(name, type, status);</span>
+<span class="fc" id="L47">        return ResponseEntity.ok(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L48">                HttpStatus.OK.value(),</span>
+                &quot;Success&quot;,
+                properties
+        ));
+    }
+
+    // GET property by ID
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;BaseResponseDTO&lt;Property&gt;&gt; getPropertyById(@PathVariable String id) {
+<span class="fc" id="L57">        Optional&lt;Property&gt; property = propertyService.getPropertyById(id);</span>
+
+<span class="fc bfc" id="L59" title="All 2 branches covered.">        if (property.isEmpty()) {</span>
+<span class="fc" id="L60">            return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L61">                    .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L62">                            HttpStatus.NOT_FOUND.value(),</span>
+                            &quot;Property not found&quot;,
+                            null
+                    ));
+        }
+
+<span class="fc" id="L68">        return ResponseEntity.ok(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L69">                HttpStatus.OK.value(),</span>
+                &quot;Success&quot;,
+<span class="fc" id="L71">                property.get()</span>
+        ));
+    }
+
+    // POST create property
+    @PostMapping(&quot;/create&quot;)
+    public ResponseEntity&lt;BaseResponseDTO&lt;Property&gt;&gt; createProperty(
+            @RequestBody PropertyRequestDTO request) {
+
+        try {
+            // Count existing properties for this owner
+<span class="fc" id="L82">            long propertyCount = propertyService.countPropertiesByOwner(request.getOwnerID());</span>
+
+            // Generate property ID
+<span class="fc" id="L85">            String propertyId = propertyService.generatePropertyId(</span>
+<span class="fc" id="L86">                    request.getType(), request.getOwnerID(), propertyCount);</span>
+
+            // Create property
+<span class="fc" id="L89">            Property property = new Property();</span>
+<span class="fc" id="L90">            property.setPropertyID(propertyId);</span>
+<span class="fc" id="L91">            property.setPropertyName(request.getPropertyName());</span>
+<span class="fc" id="L92">            property.setType(request.getType());</span>
+<span class="fc" id="L93">            property.setProvince(request.getProvince());</span>
+<span class="fc" id="L94">            property.setAddress(request.getAddress());</span>
+<span class="fc" id="L95">            property.setDescription(request.getDescription());</span>
+<span class="fc" id="L96">            property.setOwnerID(request.getOwnerID());</span>
+<span class="fc" id="L97">            property.setOwnerName(request.getOwnerName());</span>
+<span class="fc" id="L98">            property.setTotalRoom(0);</span>
+<span class="fc" id="L99">            property.setActiveStatus(1);</span>
+<span class="fc" id="L100">            property.setIncome(0);</span>
+
+<span class="fc" id="L102">            Property savedProperty = propertyService.createProperty(property);</span>
+
+            // Check for duplicate room types
+<span class="pc bpc" id="L105" title="1 of 4 branches missed.">            if (request.getRoomTypes() != null &amp;&amp; !request.getRoomTypes().isEmpty()) {</span>
+                // First check for duplicates within the request list itself
+<span class="fc" id="L107">                List&lt;String&gt; roomTypeKeys = new ArrayList&lt;&gt;();</span>
+                
+<span class="fc bfc" id="L109" title="All 2 branches covered.">                for (RoomTypeRequestDTO rtDto : request.getRoomTypes()) {</span>
+<span class="fc" id="L110">                    String key = rtDto.getName() + &quot;-&quot; + rtDto.getFloor();</span>
+                    
+<span class="fc bfc" id="L112" title="All 2 branches covered.">                    if (roomTypeKeys.contains(key)) {</span>
+<span class="fc" id="L113">                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L114">                                .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L115">                                        HttpStatus.BAD_REQUEST.value(),</span>
+<span class="fc" id="L116">                                        &quot;Duplicate room type in request: &quot; + rtDto.getName() + &quot; on floor &quot; + rtDto.getFloor(),</span>
+                                        null
+                                ));
+                    }
+                    
+<span class="fc" id="L121">                    roomTypeKeys.add(key);</span>
+<span class="fc" id="L122">                }</span>
+
+<span class="fc" id="L124">                List&lt;RoomType&gt; roomTypesToCreate = new ArrayList&lt;&gt;();</span>
+
+<span class="fc bfc" id="L126" title="All 2 branches covered.">                for (RoomTypeRequestDTO rtDto : request.getRoomTypes()) {</span>
+                    // Check duplicate against database
+<span class="fc bfc" id="L128" title="All 2 branches covered.">                    if (roomTypeService.isDuplicateRoomType(savedProperty, rtDto.getName(), rtDto.getFloor())) {</span>
+<span class="fc" id="L129">                        return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L130">                                .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L131">                                        HttpStatus.BAD_REQUEST.value(),</span>
+<span class="fc" id="L132">                                        &quot;Duplicate room type found: &quot; + rtDto.getName() + &quot; on floor &quot; + rtDto.getFloor(),</span>
+                                        null
+                                ));
+                    }
+
+                    // Create room type
+<span class="fc" id="L138">                    RoomType roomType = new RoomType();</span>
+<span class="fc" id="L139">                    String roomTypeId = roomTypeService.generateRoomTypeId(propertyCount, rtDto.getName(), rtDto.getFloor());</span>
+<span class="fc" id="L140">                    roomType.setRoomTypeID(roomTypeId);</span>
+<span class="fc" id="L141">                    roomType.setName(rtDto.getName());</span>
+<span class="fc" id="L142">                    roomType.setPrice(rtDto.getPrice());</span>
+<span class="fc" id="L143">                    roomType.setDescription(rtDto.getDescription());</span>
+<span class="fc" id="L144">                    roomType.setCapacity(rtDto.getCapacity());</span>
+<span class="fc" id="L145">                    roomType.setFacility(rtDto.getFacility());</span>
+<span class="fc" id="L146">                    roomType.setFloor(rtDto.getFloor());</span>
+<span class="fc" id="L147">                    roomType.setProperty(savedProperty);</span>
+
+<span class="fc" id="L149">                    RoomType savedRoomType = roomTypeService.createRoomType(roomType);</span>
+
+                    // Get existing room count on this floor for this property
+<span class="fc" id="L152">                    int existingRoomsOnFloor = (int) roomService.countRoomsByPropertyAndFloor(propertyId, rtDto.getFloor());</span>
+                    
+                    // Create rooms for this room type
+<span class="fc bfc" id="L155" title="All 2 branches covered.">                    for (int i = 1; i &lt;= rtDto.getUnit(); i++) {</span>
+<span class="fc" id="L156">                        Room room = new Room();</span>
+                        // Room number: floor * 100 + next available number
+<span class="fc" id="L158">                        int roomNumber = rtDto.getFloor() * 100 + existingRoomsOnFloor + i;</span>
+<span class="fc" id="L159">                        String roomId = roomService.generateRoomId(propertyId, roomNumber);</span>
+<span class="fc" id="L160">                        room.setRoomID(roomId);</span>
+<span class="fc" id="L161">                        room.setName(String.valueOf(roomNumber));</span>
+<span class="fc" id="L162">                        room.setRoomType(savedRoomType);</span>
+<span class="fc" id="L163">                        roomService.createRoom(room);</span>
+                    }
+
+<span class="fc" id="L166">                    roomTypesToCreate.add(savedRoomType);</span>
+<span class="fc" id="L167">                }</span>
+
+                // Refresh property from database to load room types
+<span class="fc" id="L170">                Optional&lt;Property&gt; refreshedPropertyOpt = propertyService.getPropertyById(propertyId);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">                if (refreshedPropertyOpt.isPresent()) {</span>
+<span class="fc" id="L172">                    savedProperty = refreshedPropertyOpt.get();</span>
+                }
+
+                // Update total rooms
+<span class="fc" id="L176">                savedProperty.setTotalRoom(propertyService.calculateTotalRooms(savedProperty));</span>
+<span class="fc" id="L177">                savedProperty = propertyService.updateProperty(savedProperty);</span>
+            }
+
+<span class="fc" id="L180">            return ResponseEntity.status(HttpStatus.CREATED)</span>
+<span class="fc" id="L181">                    .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L182">                            HttpStatus.CREATED.value(),</span>
+                            &quot;Property created successfully&quot;,
+                            savedProperty
+                    ));
+
+<span class="fc" id="L187">        } catch (Exception e) {</span>
+<span class="fc" id="L188">            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="fc" id="L189">                    .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L190">                            HttpStatus.INTERNAL_SERVER_ERROR.value(),</span>
+<span class="fc" id="L191">                            &quot;Error creating property: &quot; + e.getMessage(),</span>
+                            null
+                    ));
+        }
+    }
+
+    // PUT update property
+    @PutMapping(&quot;/update&quot;)
+    public ResponseEntity&lt;BaseResponseDTO&lt;Property&gt;&gt; updateProperty(
+            @RequestBody Property propertyRequest) {
+
+<span class="fc" id="L202">        Optional&lt;Property&gt; existingProperty = propertyService.getPropertyById(propertyRequest.getPropertyID());</span>
+
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (existingProperty.isEmpty()) {</span>
+<span class="fc" id="L205">            return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L206">                    .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L207">                            HttpStatus.NOT_FOUND.value(),</span>
+                            &quot;Property not found&quot;,
+                            null
+                    ));
+        }
+
+<span class="fc" id="L213">        Property property = existingProperty.get();</span>
+<span class="fc" id="L214">        property.setPropertyName(propertyRequest.getPropertyName());</span>
+<span class="fc" id="L215">        property.setAddress(propertyRequest.getAddress());</span>
+<span class="fc" id="L216">        property.setDescription(propertyRequest.getDescription());</span>
+
+        // Update room types if provided
+<span class="pc bpc" id="L219" title="1 of 2 branches missed.">        if (propertyRequest.getListRoomType() != null) {</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">            for (RoomType roomType : propertyRequest.getListRoomType()) {</span>
+<span class="fc" id="L221">                Optional&lt;RoomType&gt; existingRoomType = roomTypeService.getRoomTypeById(roomType.getRoomTypeID());</span>
+<span class="fc bfc" id="L222" title="All 2 branches covered.">                if (existingRoomType.isPresent()) {</span>
+<span class="fc" id="L223">                    RoomType rt = existingRoomType.get();</span>
+<span class="fc" id="L224">                    rt.setCapacity(roomType.getCapacity());</span>
+<span class="fc" id="L225">                    rt.setPrice(roomType.getPrice());</span>
+<span class="fc" id="L226">                    rt.setDescription(roomType.getDescription());</span>
+<span class="fc" id="L227">                    rt.setFacility(roomType.getFacility());</span>
+<span class="fc" id="L228">                    roomTypeService.updateRoomType(rt);</span>
+                }
+<span class="fc" id="L230">            }</span>
+        }
+
+<span class="fc" id="L233">        Property updatedProperty = propertyService.updateProperty(property);</span>
+
+<span class="fc" id="L235">        return ResponseEntity.ok(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L236">                HttpStatus.OK.value(),</span>
+                &quot;Property updated successfully&quot;,
+                updatedProperty
+        ));
+    }
+
+    // DELETE soft delete property
+    @DeleteMapping(&quot;/delete/{id}&quot;)
+    public ResponseEntity&lt;BaseResponseDTO&lt;Void&gt;&gt; deleteProperty(@PathVariable String id) {
+<span class="fc bfc" id="L245" title="All 2 branches covered.">        if (!propertyService.canDeleteProperty(id)) {</span>
+<span class="fc" id="L246">            return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="fc" id="L247">                    .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L248">                            HttpStatus.BAD_REQUEST.value(),</span>
+                            &quot;Cannot delete property with future bookings&quot;,
+                            null
+                    ));
+        }
+
+<span class="fc" id="L254">        Property deletedProperty = propertyService.deleteProperty(id);</span>
+
+<span class="fc bfc" id="L256" title="All 2 branches covered.">        if (deletedProperty == null) {</span>
+<span class="fc" id="L257">            return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="fc" id="L258">                    .body(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L259">                            HttpStatus.NOT_FOUND.value(),</span>
+                            &quot;Property not found&quot;,
+                            null
+                    ));
+        }
+
+<span class="fc" id="L265">        return ResponseEntity.ok(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L266">                HttpStatus.OK.value(),</span>
+                &quot;Property deleted successfully&quot;,
+                null
+        ));
+    }
+
+    // GET count all properties
+    @GetMapping(&quot;/count&quot;)
+    public ResponseEntity&lt;BaseResponseDTO&lt;Long&gt;&gt; countProperties() {
+<span class="fc" id="L275">        long count = propertyService.countProperties();</span>
+<span class="fc" id="L276">        return ResponseEntity.ok(new BaseResponseDTO&lt;&gt;(</span>
+<span class="fc" id="L277">                HttpStatus.OK.value(),</span>
+                &quot;Success&quot;,
+<span class="fc" id="L279">                count</span>
+        ));
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
