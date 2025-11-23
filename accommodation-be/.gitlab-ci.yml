@@ -33,7 +33,6 @@ docker-push:
   image: docker:24
   services:
     - name: docker:24-dind
-      command: ["--insecure-registry", "registry-1.docker.io"]
   dependencies:
     - build
   before_script:
