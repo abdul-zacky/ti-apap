@@ -212,7 +212,7 @@ class RoomRestControllerPostPutTest {
 
     @Test
     void testScheduleRoomMaintenance_RoomNotFound() {
-        when(roomService.getRoomById(anyString())).thenReturn(Optional.empty());
+        when(roomService.getRoomById("INVALID")).thenReturn(Optional.empty());
         
         ResponseEntity response = roomRestController.scheduleRoomMaintenance(maintenanceRequestDTO);
         

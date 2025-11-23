@@ -1,0 +1,17 @@
+services:
+  accommodation-app-db:
+    image: postgres:17.5-alpine
+    container_name: accommodation-ti-db
+    ports:
+      - '35002:5432'
+    restart: always
+    environment:
+      - POSTGRES_USER=travelapap
+      - POSTGRES_PASSWORD=2306214510
+      - POSTGRES_DB=accommodation-2306214510
+    volumes:
+      - accommodation-app-db:/var/lib/postgresql/data
+
+volumes:
+  accommodation-app-db:
+    driver: local
