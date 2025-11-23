@@ -46,11 +46,11 @@ docker-push:
 
 deploy:
   stage: deploy
-  image: ubuntu:latest
+  image: alpine:latest
   dependencies:
     - build
   before_script:
-    - apt-get update && apt-get install -y openssh-client bash
+    - apk add --no-cache openssh bash
     - mkdir -p ~/.ssh
     - printf "%s\n" "$EC2_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
