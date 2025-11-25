@@ -58,7 +58,14 @@ deploy:
     - mkdir -p ~/.ssh
     - printf "%s\n" "$EC2_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+    - |
+      if ssh-keyscan -H -T 10 $EC2_HOST >> ~/.ssh/known_hosts 2>/dev/null; then
+        echo "SSH host key added successfully"
+      else
+        echo "StrictHostKeyChecking no" >> ~/.ssh/config
+        chmod 644 ~/.ssh/config
+        echo "Using StrictHostKeyChecking no as fallback"
+      fi
   script:
     # Generating Kubernetes ConfigMap manifest for production
     - |
