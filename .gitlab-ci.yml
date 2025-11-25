@@ -12,6 +12,7 @@ variables:
 build:
   stage: build
   image: eclipse-temurin:21-jdk
+  cache: []
   script:
     - cd accommodation-be
     - chmod +x ./gradlew
