@@ -9,15 +9,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class CorsConfig {
 
-    @Value("${CORS_ALLOWED_ORIGINS:*}")
-    private String allowedOrigins;
+
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                String[] origins = allowedOrigins.split(",");
+                String[] origins = new String[]{
+                        "http://2306214510-fe.hafizmuh.site",
+                        "https://2306214510-fe.hafizmuh.site",
+                        "http://localhost:3000",
+                        "http://localhost:5173"
+                };
 
                 registry.addMapping("/**")
                         .allowedOriginPatterns(origins)
