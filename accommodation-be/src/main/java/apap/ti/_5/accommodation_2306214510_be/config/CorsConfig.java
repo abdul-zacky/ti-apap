@@ -20,7 +20,7 @@ public class CorsConfig {
                 String[] origins = allowedOrigins.split(",");
 
                 registry.addMapping("/**")
-                        .allowedOrigins(origins)
+                        .allowedOriginPatterns(origins)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true)
