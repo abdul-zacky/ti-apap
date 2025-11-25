@@ -20,7 +20,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/property")
-@CrossOrigin(origins = "*")
 public class PropertyRestController {
 
     private final PropertyService propertyService;

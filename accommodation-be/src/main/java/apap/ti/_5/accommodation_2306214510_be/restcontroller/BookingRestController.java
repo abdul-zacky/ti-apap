@@ -21,7 +21,6 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/booking")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class BookingRestController {
 

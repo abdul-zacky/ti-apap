@@ -3,7 +3,6 @@ package apap.ti._5.accommodation_2306214510_be.restcontroller;
 import apap.ti._5.accommodation_2306214510_be.dto.BaseResponseDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,7 +13,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/province")
-@CrossOrigin(origins = "*")
 public class ProvinceRestController {
 
     private final RestTemplate restTemplate;

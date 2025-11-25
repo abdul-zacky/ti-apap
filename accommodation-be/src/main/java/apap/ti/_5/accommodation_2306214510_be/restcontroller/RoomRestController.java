@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/property")
-@CrossOrigin(origins = "*")
 @Slf4j
 public class RoomRestController {
 

@@ -12,7 +12,6 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/api/statistics")
-@CrossOrigin(origins = "*")
 public class StatisticsRestController {
 
     private final PropertyService propertyService;
