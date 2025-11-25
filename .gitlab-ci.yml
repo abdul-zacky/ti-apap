@@ -7,8 +7,8 @@ variables:
   DOCKER_IMAGE_NAME: ${DOCKER_IMAGE_NAME}
   DOCKER_USERNAME: ${DOCKER_USERNAME}
   DOCKER_PASSWORD: ${DOCKER_PASSWORD}
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
 
-# Build stage - runs on main branch
 build:
   stage: build
   image: eclipse-temurin:21-jdk
@@ -28,26 +28,23 @@ build:
   only:
     - main
 
-# Docker push - builds and pushes image with latest tag
 docker-push:
   stage: docker-push
-  image:
-    name: gcr.io/kaniko-project/executor:v1.23.2-debug
-    entrypoint: [""]
+  image: docker:24
+  services:
+    - name: docker:24-dind
   dependencies:
     - build
+  before_script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   script:
-    - mkdir -p /kaniko/.docker
-    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(printf "%s:%s" "${DOCKER_USERNAME}" "${DOCKER_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
-    - /kaniko/executor
-      --context "${CI_PROJECT_DIR}/accommodation-be"
-      --dockerfile "${CI_PROJECT_DIR}/accommodation-be/Dockerfile"
-      --destination "${DOCKER_IMAGE_NAME}:latest"
-      --destination "${DOCKER_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+    - cd accommodation-be
+    - docker build -t $DOCKER_IMAGE_NAME:$IMAGE_TAG -t $DOCKER_IMAGE_NAME:latest .
+    - docker push $DOCKER_IMAGE_NAME:$IMAGE_TAG
+    - docker push $DOCKER_IMAGE_NAME:latest
   only:
     - main
 
-# Deploy to Production - auto deploy from main branch
 deploy:
   stage: deploy
   image: alpine:latest
@@ -56,38 +53,43 @@ deploy:
   before_script:
     - apk add --no-cache openssh bash
     - mkdir -p ~/.ssh
+    - echo "EC2_HOST is $EC2_HOST"
+    - echo "EC2_USER is $EC2_USER"
     - printf "%s\n" "$EC2_SSH_KEY" > ~/.ssh/id_rsa
     - chmod 600 ~/.ssh/id_rsa
-    - ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+    - echo "Attempting to scan SSH keys from $EC2_HOST..."
+    - ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts 2>&1 || true
+    - echo "SSH known_hosts:"
+    - cat ~/.ssh/known_hosts || echo "No known_hosts file"
   script:
-    # Generating Kubernetes ConfigMap manifest for production
+    # Generating Kubernetes ConfigMap manifest
     - |
       printf "apiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: accommodation-ti-config\ndata:\n  DATABASE_URL_PROD: \"%s\"\n  DATABASE_USERNAME: \"%s\"\n" \
         "$DATABASE_URL_PROD" "$DATABASE_USERNAME" > config.yaml
 
-    # Generating Kubernetes Secret manifest for production
+    # Generating Kubernetes Secret manifest
     - |
       printf "apiVersion: v1\nkind: Secret\nmetadata:\n  name: accommodation-ti-secret\ntype: Opaque\nstringData:\n  DATABASE_PASSWORD: \"%s\"\n  JWT_SECRET_KEY: \"%s\"\n  CORS_ALLOWED_ORIGINS: \"%s\"\n" \
         "$DATABASE_PASSWORD" "$JWT_SECRET_KEY" "$CORS_ALLOWED_ORIGINS" > secret.yaml
 
-    # Update deployment.yaml with production image tag
-    - sed "s|\${DOCKER_IMAGE_NAME}:\${IMAGE_TAG}|$DOCKER_IMAGE_NAME:latest|" accommodation-be/k8s/deployment.yaml > deployment.yaml
+    # Update deployment.yaml with the correct image tag
+    - sed "s|\${DOCKER_IMAGE_NAME}:*\${IMAGE_TAG}|$DOCKER_IMAGE_NAME:$IMAGE_TAG|" accommodation-be/k8s/deployment.yaml > deployment.yaml
 
     # Transfer configuration files to EC2
-    - scp config.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-config.yaml
-    - scp secret.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-secret.yaml
-    - scp deployment.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-deployment.yaml
-    - scp accommodation-be/k8s/service.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-service.yaml
-    - scp accommodation-be/k8s/ingress.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-ingress.yaml
+    - scp -o StrictHostKeyChecking=no config.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-config.yaml
+    - scp -o StrictHostKeyChecking=no secret.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-secret.yaml
+    - scp -o StrictHostKeyChecking=no deployment.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-deployment.yaml
+    - scp -o StrictHostKeyChecking=no accommodation-be/k8s/service.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-service.yaml
+    - scp -o StrictHostKeyChecking=no accommodation-be/k8s/ingress.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-ti-ingress.yaml
 
     # Apply Kubernetes manifests on EC2
-    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-config.yaml"
-    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-secret.yaml"
-    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-deployment.yaml"
-    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-service.yaml"
-    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-ingress.yaml"
-  environment:
-    name: production
-    url: https://2306214510-be.hafizmuh.site
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-config.yaml"
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-secret.yaml"
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-deployment.yaml"
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-service.yaml"
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-ti-ingress.yaml"
+
+    # Force rollout restart to pull new image
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl rollout restart deployment accommodation-ti"
   only:
     - main
