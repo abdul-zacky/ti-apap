@@ -30,20 +30,18 @@ build:
 
 docker-push:
   stage: docker-push
-  image: docker:24
-  services:
-    - docker:24-dind
-  variables:
-    DOCKER_TLS_CERTDIR: ""
-    DOCKER_HOST: tcp://docker:2375
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
   dependencies:
     - build
-  before_script:
-    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   script:
-    - cd accommodation-be
-    - docker build -t $DOCKER_IMAGE_NAME:$IMAGE_TAG .
-    - docker push $DOCKER_IMAGE_NAME:$IMAGE_TAG
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(printf "%s:%s" "${DOCKER_USERNAME}" "${DOCKER_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}/accommodation-be"
+      --dockerfile "${CI_PROJECT_DIR}/accommodation-be/Dockerfile"
+      --destination "${DOCKER_IMAGE_NAME}:${IMAGE_TAG}"
   only:
     - feat/praktikum-9
 
