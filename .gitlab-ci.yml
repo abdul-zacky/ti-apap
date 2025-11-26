@@ -21,7 +21,7 @@ build:
     - echo "=== Checking RestControllers for @CrossOrigin ==="
     - grep -r "@CrossOrigin" src/main/java/apap/ti/_5/accommodation_2306214510_be/restcontroller/ && echo "@CrossOrigin found (BAD)" && exit 1 || echo "No @CrossOrigin found (GOOD)"
     - chmod +x ./gradlew
-    - ./gradlew clean build -x test
+    - ./gradlew clean build --no-build-cache -x test
     - echo "=== Verifying JAR was built ==="
     - ls -lh build/libs/
     - cp $(find build/libs -name "*.jar" | head -n 1) app.jar
