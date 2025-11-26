@@ -23,6 +23,11 @@ public class CorsConfig {
                         "http://localhost:5173"
                 };
 
+                System.out.println("=== CORS CONFIG DEBUG ===");
+                System.out.println("Using hardcoded origins (allowedOriginPatterns): " + String.join(", ", origins));
+                System.out.println("This should NOT use allowedOrigins with wildcard");
+                System.out.println("========================");
+
                 registry.addMapping("/**")
                         .allowedOriginPatterns(origins)
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
