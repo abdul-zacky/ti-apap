@@ -22,7 +22,11 @@ build:
     - grep -r "@CrossOrigin" src/main/java/apap/ti/_5/accommodation_2306214510_be/restcontroller/ && echo "@CrossOrigin found (BAD)" && exit 1 || echo "No @CrossOrigin found (GOOD)"
     - chmod +x ./gradlew
     - ./gradlew clean build -x test
+    - echo "=== Verifying JAR was built ==="
+    - ls -lh build/libs/
     - cp $(find build/libs -name "*.jar" | head -n 1) app.jar
+    - echo "=== JAR file details ==="
+    - ls -lh app.jar
   artifacts:
     paths:
       - accommodation-be/app.jar
@@ -45,9 +49,15 @@ docker-push:
     - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   script:
     - cd accommodation-be
+    - echo "=== Building Docker image ==="
+    - echo "Image name: $DOCKER_IMAGE_NAME:$IMAGE_TAG"
+    - echo "Also tagging as: $DOCKER_IMAGE_NAME:latest"
     - docker build -t $DOCKER_IMAGE_NAME:$IMAGE_TAG -t $DOCKER_IMAGE_NAME:latest .
+    - echo "=== Pushing Docker images ==="
     - docker push $DOCKER_IMAGE_NAME:$IMAGE_TAG
     - docker push $DOCKER_IMAGE_NAME:latest
+    - echo "=== Docker images pushed successfully ==="
+    - docker images | grep $DOCKER_IMAGE_NAME
   only:
     - main
 
@@ -74,9 +84,12 @@ deploy:
         "$DATABASE_URL_PROD" "$DATABASE_USERNAME" > config.yaml
 
     # Generating Kubernetes Secret manifest
+    - echo "=== Debug - CORS_ALLOWED_ORIGINS value ==="
+    - echo "$CORS_ALLOWED_ORIGINS"
+    - echo "========================================="
     - |
-      printf "apiVersion: v1\nkind: Secret\nmetadata:\n  name: accommodation-ti-secret\ntype: Opaque\nstringData:\n  DATABASE_PASSWORD: \"%s\"\n  JWT_SECRET_KEY: \"%s\"\n" \
-        "$DATABASE_PASSWORD" "$JWT_SECRET_KEY" > secret.yaml
+      printf "apiVersion: v1\nkind: Secret\nmetadata:\n  name: accommodation-ti-secret\ntype: Opaque\nstringData:\n  DATABASE_PASSWORD: \"%s\"\n  JWT_SECRET_KEY: \"%s\"\n  CORS_ALLOWED_ORIGINS: \"%s\"\n" \
+        "$DATABASE_PASSWORD" "$JWT_SECRET_KEY" "$CORS_ALLOWED_ORIGINS" > secret.yaml
 
     # Update deployment.yaml with the correct image tag
     - sed "s|\${DOCKER_IMAGE_NAME}:*\${IMAGE_TAG}|$DOCKER_IMAGE_NAME:$IMAGE_TAG|" accommodation-be/k8s/deployment.yaml > deployment.yaml
@@ -97,5 +110,21 @@ deploy:
 
     # Force rollout restart to pull new image
     - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl rollout restart deployment accommodation-ti"
+
+    # Wait for rollout to complete
+    - echo "=== Waiting for deployment to complete ==="
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl rollout status deployment accommodation-ti --timeout=300s"
+
+    # Verify pod is running
+    - echo "=== Checking pod status ==="
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl get pods -l app=accommodation-ti"
+
+    # Check pod logs for CORS errors
+    - echo "=== Checking pod logs for errors ==="
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl logs -l app=accommodation-ti --tail=50 | grep -i 'cors\|error\|exception' || echo 'No CORS/error messages found in logs (GOOD)'"
+
+    # Verify CORS configuration is loaded
+    - echo "=== Verifying CORS configuration ==="
+    - ssh -o StrictHostKeyChecking=no $EC2_USER@$EC2_HOST "sudo k3s kubectl logs -l app=accommodation-ti --tail=100 | grep 'CORS_ALLOWED_ORIGINS' || echo 'CORS config log not found'"
   only:
     - main
