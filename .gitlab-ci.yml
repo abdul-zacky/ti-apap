@@ -17,9 +17,9 @@ build:
     - cd accommodation-be
     - echo "=== Building from commit $(git rev-parse HEAD) ==="
     - echo "=== Checking CorsConfig.java for @Value annotation ==="
-    - grep -n "@Value" src/main/java/apap/ti/_5/accommodation_2306214510_be/config/CorsConfig.java || echo "No @Value found (GOOD)"
+    - grep -n '@Value("${CORS_ALLOWED_ORIGINS}")' src/main/java/apap/ti/_5/accommodation_2306214510_be/config/CorsConfig.java && echo "@Value found (GOOD)" || (echo "@Value NOT found (BAD)" && exit 1)
     - echo "=== Checking RestControllers for @CrossOrigin ==="
-    - grep -r "@CrossOrigin" src/main/java/apap/ti/_5/accommodation_2306214510_be/restcontroller/ || echo "No @CrossOrigin found (GOOD)"
+    - grep -r "@CrossOrigin" src/main/java/apap/ti/_5/accommodation_2306214510_be/restcontroller/ && echo "@CrossOrigin found (BAD)" && exit 1 || echo "No @CrossOrigin found (GOOD)"
     - chmod +x ./gradlew
     - ./gradlew clean build -x test
     - cp $(find build/libs -name "*.jar" | head -n 1) app.jar
