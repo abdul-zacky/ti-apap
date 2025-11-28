@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: accommodation-fe-ti
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: accommodation-fe-ti
+  template:
+    metadata:
+      labels:
+        app: accommodation-fe-ti
+      annotations:
+        timestamp: "${CI_COMMIT_TIMESTAMP}"
+    spec:
+      containers:
+        - name: nginx-container
+          image: ${DOCKER_IMAGE_NAME}:${IMAGE_TAG}
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"

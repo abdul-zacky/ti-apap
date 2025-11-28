@@ -1,0 +1,78 @@
+stages:
+  - build
+  - docker-push
+  - deploy
+
+variables:
+  DOCKER_IMAGE_NAME: ${DOCKER_IMAGE_NAME_FE}
+  DOCKER_USERNAME: ${DOCKER_USERNAME}
+  DOCKER_PASSWORD: ${DOCKER_PASSWORD}
+
+# Build stage - runs on main branch
+build:
+  stage: build
+  image: node:22-alpine
+  script:
+    - npm ci
+    - VITE_API_URL=$VITE_API_URL npm run build
+  artifacts:
+    paths:
+      - dist/
+      - Dockerfile
+      - nginx.conf
+      - k8s/deployment.yaml
+      - k8s/service.yaml
+      - k8s/ingress.yaml
+    expire_in: 1 hour
+  only:
+    - main
+
+# Docker push - builds and pushes image with latest tag
+docker-push:
+  stage: docker-push
+  image:
+    name: gcr.io/kaniko-project/executor:v1.23.2-debug
+    entrypoint: [""]
+  dependencies:
+    - build
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"https://index.docker.io/v1/\":{\"auth\":\"$(printf "%s:%s" "${DOCKER_USERNAME}" "${DOCKER_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${DOCKER_IMAGE_NAME}:latest"
+      --destination "${DOCKER_IMAGE_NAME}:${CI_COMMIT_SHORT_SHA}"
+  only:
+    - main
+
+# Deploy to Production - auto deploy from main branch
+deploy:
+  stage: deploy
+  image: alpine:latest
+  dependencies:
+    - build
+  before_script:
+    - apk add --no-cache openssh bash
+    - mkdir -p ~/.ssh
+    - printf "%s\n" "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+    - chmod 600 ~/.ssh/id_rsa
+    - ssh-keyscan -H $EC2_HOST >> ~/.ssh/known_hosts
+  script:
+    # Update deployment.yaml with production image tag and timestamp
+    - sed "s|\${DOCKER_IMAGE_NAME}:\${IMAGE_TAG}|$DOCKER_IMAGE_NAME:latest|g; s|\${CI_COMMIT_TIMESTAMP}|$(date -u +%Y%m%d%H%M%S)|g" k8s/deployment.yaml > deployment.yaml
+
+    # Transfer configuration files to EC2
+    - scp deployment.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-fe-ti-deployment.yaml
+    - scp k8s/service.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-fe-ti-service.yaml
+    - scp k8s/ingress.yaml $EC2_USER@$EC2_HOST:~/app/k8s/accommodation-fe-ti-ingress.yaml
+
+    # Apply Kubernetes manifests on EC2
+    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-fe-ti-deployment.yaml"
+    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-fe-ti-service.yaml"
+    - ssh $EC2_USER@$EC2_HOST "sudo k3s kubectl apply -f ~/app/k8s/accommodation-fe-ti-ingress.yaml"
+  environment:
+    name: production
+    url: https://2306214510-fe.hafizmuh.site
+  only:
+    - main
